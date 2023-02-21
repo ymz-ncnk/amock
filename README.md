@@ -31,25 +31,25 @@ __gen/mock.go__
 package main
 
 import (
-	"io"
-	"reflect"
+  "io"
+  "reflect"
 
-	"github.com/ymz-ncnk/amock"
+  "github.com/ymz-ncnk/amock"
 )
 
 func main() {
-	aMock, err := amock.New()
-	if err != nil {
-		panic(err)
-	}
-	tp := reflect.TypeOf((*io.Reader)(nil)).Elem()
-	// Generated filename and mock implementation type will be equal to tp.Name().
-	// Also generated file will be placed into the "testdata/mock" folder.
-	// If you want to change these defaults use AMock.GenerateAs() method.
-	err = aMock.Generate(tp)
-	if err != nil {
-		panic(err)
-	}
+  aMock, err := amock.New()
+  if err != nil {
+    panic(err)
+  }
+  tp := reflect.TypeOf((*io.Reader)(nil)).Elem()
+  // Generated filename and mock implementation type will be equal to tp.Name().
+  // Also generated file will be placed into the "testdata/mock" folder.
+  // If you want to change these defaults use AMock.GenerateAs() method.
+  err = aMock.Generate(tp)
+  if err != nil {
+    panic(err)
+  }
 }
 ```
 
