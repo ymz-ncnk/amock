@@ -1,4 +1,4 @@
-package amock
+package core
 
 import (
 	"fmt"
@@ -48,8 +48,8 @@ func (method *Method) AddMethodCall(fn Func) {
 // Call calls a method once. With help of reflection calls a function,
 // registered as a method call, with the given params.
 // reflect.Value param is passed to the corresponding function as is.
-// If all registered method calls have already been executed, returns
-// ErrUnexpectedCall error.
+// If all registered method calls have already been made, an ErrUnexpectedCall
+// error is returned.
 // Threadsafe.
 func (method *Method) Call(params []interface{}) ([]interface{}, error) {
 	var fn reflect.Value
@@ -66,8 +66,8 @@ func (method *Method) Call(params []interface{}) ([]interface{}, error) {
 	return fromReflectValues(result), nil
 }
 
-// CheckCalls checks method calls. If number of the added method calls is not
-// equal to the number of calls, returns ok == false.
+// CheckCalls checks method calls. If the number of method calls added is not
+// equal to the number of calls, it returns ok == false.
 func (method *Method) CheckCalls(mockName MockName, methodName MethodName) (
 	info MethodCallsInfo, ok bool) {
 	method.mu.Lock()

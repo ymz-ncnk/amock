@@ -1,95 +1,75 @@
 package amock
 
 import (
-	"fmt"
 	"reflect"
-	"sync"
+
+	"github.com/ymz-ncnk/amock/parser"
+	"github.com/ymz-ncnk/amockgen"
+	"github.com/ymz-ncnk/amockgen/text_template"
+	persistor_mod "github.com/ymz-ncnk/persistor"
+	"golang.org/x/tools/imports"
 )
 
-// MockName is a type for a mock name. Should use mocked interface name as a
-// value.
-type MockName string
+// FilenameExtenstion of the generated files.
+const FilenameExtenstion = ".gen.go"
 
-// Func should have a function value. Used to represent one method call.
-type Func interface{}
+// DefConf is the default configuration for AMock.
+var DefConf = Conf{Path: "testdata/mock", Package: "mock"}
 
-// New creates new Mock.
-func New(name MockName) *Mock {
-	return &Mock{name: name}
-}
-
-// Mock helps you to mock interfaces.
-type Mock struct {
-	name MockName
-	m    sync.Map
-}
-
-// Register registers a method. A function is registered as one method call.
-// You could chain Register calls:
-// mock.Register("Handle", ...).Register("Handle", ...)
-func (mock *Mock) Register(name MethodName, fn Func) *Mock {
-	if !isFunc(fn) {
-		panic(ErrNotFunction)
-	}
-	method, _ := mock.m.LoadOrStore(name, NewMethod())
-	method.(*Method).AddMethodCall(fn)
-	return mock
-}
-
-// Register registers a method. A function is registered as several method
-// calls.
-func (mock *Mock) RegisterN(name MethodName, n int, fn Func) *Mock {
-	for i := 0; i < n; i++ {
-		mock.Register(name, fn)
-	}
-	return mock
-}
-
-// Unregister unregisters method.
-func (mock *Mock) Unregister(name MethodName) *Mock {
-	mock.m.Delete(name)
-	return mock
-}
-
-// Call calls method with given params. Uses reflection to execute functions,
-// registered as method calls. Note, that reflect.Value params are passed to
-// these functions as is.
-// If the method has not been registered returns UnknownMethodCallError.
-// If all registered method calls have already been executed returns
-// UnexpectedMethodCallError.
-func (mock *Mock) Call(name MethodName, params ...interface{}) (
-	[]interface{}, error) {
-	method, pst := mock.m.Load(name)
-	if !pst {
-		return nil, NewUnknownMethodCallError(mock.name, name)
-	}
-	vals, err := method.(*Method).Call(params)
+// New creates a new AMock.
+func New() (aMock AMock, err error) {
+	aMockGen, err := text_template.New()
 	if err != nil {
-		if err == ErrUnexpectedCall {
-			return nil, NewUnexpectedMethodCallError(mock.name, name)
-		} else {
-			panic(fmt.Sprintf("unepxected '%v' err", err))
-		}
+		return
 	}
-	return vals, nil
+	aMock = NewWith(aMockGen, persistor_mod.NewHarDrivePersistor())
+	return
 }
 
-// CheckCalls checks methods calls. If all registered methods were called the
-// estimated number of times returns empty array.
-func (mock *Mock) CheckCalls() []MethodCallsInfo {
-	arr := []MethodCallsInfo{}
-	mock.m.Range(func(key, value any) bool {
-		methodName := key.(MethodName)
-		method := value.(*Method)
-		info, ok := method.CheckCalls(mock.name, methodName)
-		if !ok {
-			arr = append(arr, info)
-		}
-		return true
-	})
-	return arr
+// NewWith creates a new configurable AMock.
+func NewWith(aMockGen amockgen.AMockGen,
+	persistor persistor_mod.Persistor) AMock {
+	return AMock{
+		aMockGen:  aMockGen,
+		persistor: persistor,
+	}
 }
 
-func isFunc(v interface{}) bool {
-	return reflect.TypeOf(v).Kind() == reflect.Func
+// AMock is a mock implementations generator.
+type AMock struct {
+	aMockGen  amockgen.AMockGen
+	persistor persistor_mod.Persistor
+}
+
+// Generate generates mock implementation of the interface. If tp is not
+// an interface returns parser.ErrNotInterface.
+// Filename and mock implementation type will be equal to tp.Name().
+// Uses DefConf.
+func (aMock AMock) Generate(tp reflect.Type) error {
+	return aMock.GenerateAs(tp, DefConf)
+}
+
+// GenerateAs performs like Generate. With help of this method you can configure
+// the generation process.
+func (aMock AMock) GenerateAs(tp reflect.Type, conf Conf) (err error) {
+	iDesc, err := parser.Parse(tp)
+	if err != nil {
+		return
+	}
+	if len(conf.Package) > 0 {
+		iDesc.Package = conf.Package
+	}
+	if len(conf.Name) > 0 {
+		iDesc.Name = conf.Name
+	}
+	name := iDesc.Name + FilenameExtenstion
+	data, err := aMock.aMockGen.Generate(iDesc)
+	if err != nil {
+		return
+	}
+	data, err = imports.Process("", data, nil)
+	if err != nil {
+		return
+	}
+	return aMock.persistor.Persist(name, data, conf.Path)
 }

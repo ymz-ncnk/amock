@@ -1,4 +1,4 @@
-package amock
+package core
 
 import (
 	"errors"

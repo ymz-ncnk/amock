@@ -1,11 +1,13 @@
 package amock
 
-// CheckCalls checks if all registered methods calls of the given mocks were
-// executed. If so, returns empty result map. Otherwise, returns a map in which
-// key is an index of the mock in mocks array param, and value is a
-// MethodCallsInfo.
-func CheckCalls(mocks []*Mock) (result map[int][]MethodCallsInfo) {
-	result = make(map[int][]MethodCallsInfo)
+import "github.com/ymz-ncnk/amock/core"
+
+// CheckCalls checks if all registered method calls were made for each mock.
+// If yes, it returns an empty result map. Otherwise, it returns a map where
+// key is the index in the mocks param array and value is the
+// MethodCallsInfo array.
+func CheckCalls(mocks []*core.Mock) (result map[int][]core.MethodCallsInfo) {
+	result = make(map[int][]core.MethodCallsInfo)
 	for i := 0; i < len(mocks); i++ {
 		info := mocks[i].CheckCalls()
 		if len(info) > 0 {
