@@ -1,5 +1,7 @@
 github.com/ymz-ncnk/amockgen v0.1.0 h1:2XQIgfVgH+GupWZ02JS91vRL7JB52KorkshNf9UhFwI=
 github.com/ymz-ncnk/amockgen v0.1.0/go.mod h1:2xjw3lD/acsiypkDBYbiASBkwItEapu6i+2udTFlky0=
+github.com/ymz-ncnk/amockgen v0.1.1-0.20230221204410-b1089420396a h1:2TBbfVuOCoFRPgD0yY28Qhckdb9EMUXK/mjHLv6mhwQ=
+github.com/ymz-ncnk/amockgen v0.1.1-0.20230221204410-b1089420396a/go.mod h1:2xjw3lD/acsiypkDBYbiASBkwItEapu6i+2udTFlky0=
 github.com/ymz-ncnk/dvargen v0.1.0/go.mod h1:tvfyzAoAeIN6X6JgCXGQAsS6adyIPcmSWkfZ6ycq+Co=
 github.com/ymz-ncnk/persistor v0.1.0 h1:XnjYFPg97frO/eTDFwPAgOeuRqnfPu1seovjdinDfuM=
 github.com/ymz-ncnk/persistor v0.1.0/go.mod h1:++l5ZDX0OCxw5j/1+tOo8I4VcZzx573RonCAbSXIv9Q=
