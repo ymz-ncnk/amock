@@ -1,6 +1,6 @@
 # AMock
 AMock is a simple thread-safe mocking library. It helps you generate mock
-implementations of the interfaces.
+implementations of interfaces in Golang.
 
 # Tests
 Test coverage is about 85%.
