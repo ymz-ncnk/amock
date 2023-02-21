@@ -1,6 +1,6 @@
 # AMock
 AMock is a simple thread-safe mocking library. It helps you generate mock
-implementations for interfaces.
+implementations of the interfaces.
 
 # Tests
 Test coverage is about 85%.
