@@ -12,7 +12,7 @@ Create in your home directory a `foo` folder with the following structure:
 ```
 foo/
  |‒‒‒gen/
- |		|‒‒‒mock.go
+ |    |‒‒‒mock.go
  |‒‒‒testdata/
  |      |‒‒‒mock/
  |‒‒‒foo.go
