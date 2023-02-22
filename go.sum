@@ -1,10 +1,8 @@
-github.com/ymz-ncnk/amockgen v0.1.0 h1:2XQIgfVgH+GupWZ02JS91vRL7JB52KorkshNf9UhFwI=
-github.com/ymz-ncnk/amockgen v0.1.0/go.mod h1:2xjw3lD/acsiypkDBYbiASBkwItEapu6i+2udTFlky0=
 github.com/ymz-ncnk/amockgen v0.1.1-0.20230221204410-b1089420396a h1:2TBbfVuOCoFRPgD0yY28Qhckdb9EMUXK/mjHLv6mhwQ=
 github.com/ymz-ncnk/amockgen v0.1.1-0.20230221204410-b1089420396a/go.mod h1:2xjw3lD/acsiypkDBYbiASBkwItEapu6i+2udTFlky0=
 github.com/ymz-ncnk/dvargen v0.1.0/go.mod h1:tvfyzAoAeIN6X6JgCXGQAsS6adyIPcmSWkfZ6ycq+Co=
-github.com/ymz-ncnk/persistor v0.1.0 h1:XnjYFPg97frO/eTDFwPAgOeuRqnfPu1seovjdinDfuM=
-github.com/ymz-ncnk/persistor v0.1.0/go.mod h1:++l5ZDX0OCxw5j/1+tOo8I4VcZzx573RonCAbSXIv9Q=
+github.com/ymz-ncnk/persistor v0.1.1-0.20230222113930-d90a8f7d1cf6 h1:VmTxkMEWmaC4Hx+z8l+0QF7zY1CeS2jsH8o/WsQHy50=
+github.com/ymz-ncnk/persistor v0.1.1-0.20230222113930-d90a8f7d1cf6/go.mod h1:++l5ZDX0OCxw5j/1+tOo8I4VcZzx573RonCAbSXIv9Q=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20210921155107-089bfa567519/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=

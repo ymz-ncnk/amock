@@ -1,3 +1,4 @@
+//go:generate go run gen/testdata.go
 package amock
 
 import (
