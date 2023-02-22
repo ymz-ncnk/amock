@@ -63,7 +63,13 @@ $ go generate
 
 Now you can see `Reader.gen.go` file in the `testdata/mock` folder, which is 
 simply uses `*amock_core.Mock` as a delegate.
-To see how this mock implementation works, let's test it:
+To see how this mock implementation works, let's test it. Create a `foo_test.go` 
+file:
+```
+foo/
+ |‒‒‒...
+ |‒‒‒foo_test.go
+```
 
 __foo_test.go__
 ```go
