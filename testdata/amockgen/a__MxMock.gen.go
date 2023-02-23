@@ -29,7 +29,7 @@ func (mock MxMock) RegisterM1(
 	return mock
 }
 
-// RegisterM1 registers a function as n M1() method calls.
+// RegisterNM1 registers a function as n M1() method calls.
 func (mock MxMock) RegisterNM1(n int,
 	fn func(p0 int) (r0 float32)) MxMock {
 	mock.RegisterN("M1", n, fn)
@@ -49,7 +49,7 @@ func (mock MxMock) RegisterM10(
 	return mock
 }
 
-// RegisterM10 registers a function as n M10() method calls.
+// RegisterNM10 registers a function as n M10() method calls.
 func (mock MxMock) RegisterNM10(n int,
 	fn func()) MxMock {
 	mock.RegisterN("M10", n, fn)
@@ -69,7 +69,7 @@ func (mock MxMock) RegisterM2(
 	return mock
 }
 
-// RegisterM2 registers a function as n M2() method calls.
+// RegisterNM2 registers a function as n M2() method calls.
 func (mock MxMock) RegisterNM2(n int,
 	fn func(p0 *[3]string, p1 []bool) (r0 []*uint, r1 [10]big.Int)) MxMock {
 	mock.RegisterN("M2", n, fn)
@@ -89,7 +89,7 @@ func (mock MxMock) RegisterM3(
 	return mock
 }
 
-// RegisterM3 registers a function as n M3() method calls.
+// RegisterNM3 registers a function as n M3() method calls.
 func (mock MxMock) RegisterNM3(n int,
 	fn func(p0 chan error)) MxMock {
 	mock.RegisterN("M3", n, fn)
@@ -109,7 +109,7 @@ func (mock MxMock) RegisterM4(
 	return mock
 }
 
-// RegisterM4 registers a function as n M4() method calls.
+// RegisterNM4 registers a function as n M4() method calls.
 func (mock MxMock) RegisterNM4(n int,
 	fn func(p0 io.Reader)) MxMock {
 	mock.RegisterN("M4", n, fn)
@@ -129,7 +129,7 @@ func (mock MxMock) RegisterM5(
 	return mock
 }
 
-// RegisterM5 registers a function as n M5() method calls.
+// RegisterNM5 registers a function as n M5() method calls.
 func (mock MxMock) RegisterNM5(n int,
 	fn func(p0 io.Reader, p1 io.Writer) (r0 interface{}, r1 io.ReadCloser)) MxMock {
 	mock.RegisterN("M5", n, fn)
@@ -149,7 +149,7 @@ func (mock MxMock) RegisterM6(
 	return mock
 }
 
-// RegisterM6 registers a function as n M6() method calls.
+// RegisterNM6 registers a function as n M6() method calls.
 func (mock MxMock) RegisterNM6(n int,
 	fn func(p0 interface{})) MxMock {
 	mock.RegisterN("M6", n, fn)
@@ -169,7 +169,7 @@ func (mock MxMock) RegisterM7(
 	return mock
 }
 
-// RegisterM7 registers a function as n M7() method calls.
+// RegisterNM7 registers a function as n M7() method calls.
 func (mock MxMock) RegisterNM7(n int,
 	fn func(p0 chan int, p1 io.Writer) (r0 map[int]big.Int, r1 error)) MxMock {
 	mock.RegisterN("M7", n, fn)
@@ -189,7 +189,7 @@ func (mock MxMock) RegisterM8(
 	return mock
 }
 
-// RegisterM8 registers a function as n M8() method calls.
+// RegisterNM8 registers a function as n M8() method calls.
 func (mock MxMock) RegisterNM8(n int,
 	fn func(p0 map[string]int, p1 *io.Reader, p2 interface{}) (r0 *io.WriteCloser, r1 error, r2 error)) MxMock {
 	mock.RegisterN("M8", n, fn)
@@ -209,7 +209,7 @@ func (mock MxMock) RegisterM9(
 	return mock
 }
 
-// RegisterM9 registers a function as n M9() method calls.
+// RegisterNM9 registers a function as n M9() method calls.
 func (mock MxMock) RegisterNM9(n int,
 	fn func(p0 *chan int, p1 io.Reader)) MxMock {
 	mock.RegisterN("M9", n, fn)

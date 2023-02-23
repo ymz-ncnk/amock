@@ -23,7 +23,7 @@ func (mock ReaderMock) RegisterRead(
 	return mock
 }
 
-// RegisterRead registers a function as n Read() method calls.
+// RegisterNRead registers a function as n Read() method calls.
 func (mock ReaderMock) RegisterNRead(n int,
 	fn func(p0 []uint8) (r0 int, r1 error)) ReaderMock {
 	mock.RegisterN("Read", n, fn)
