@@ -164,6 +164,7 @@ func TestSeveralCalls(t *testing.T) {
     }
   }()
   reader.Read(b)
+  t.Error("no panic")
 }
 
 func TestUnknownMethodCall(t *testing.T) {
@@ -183,7 +184,7 @@ func TestUnknownMethodCall(t *testing.T) {
     }
   }()
   reader.Read([]byte{})
-  t.Fatal("no panic")
+  t.Error("no panic")
 }
 
 func TestUnregister(t *testing.T) {
@@ -211,7 +212,7 @@ func TestUnregister(t *testing.T) {
   }()
 
   reader.Read([]byte{})
-  t.Fatal("no panic")
+  t.Error("no panic")
 }
 
 func TestCheckCallsFunction(t *testing.T) {
@@ -232,10 +233,10 @@ func TestCheckCallsFunction(t *testing.T) {
   }
   arr, pst := m[0]
   if !pst {
-    t.Fatal("no 0 key in CheckCalls result")
+    t.Error("no 0 key in CheckCalls result")
   }
   if len(arr) != 1 {
-    t.Fatal("number of the MethodCallsInfo not equal to 1")
+    t.Error("number of the MethodCallsInfo not equal to 1")
   }
   info := arr[0]
   // test info...
