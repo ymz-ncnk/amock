@@ -103,7 +103,7 @@ func TestSeveralCalls(t *testing.T) {
         return 2, nil
       })
       // If we want to register one function for multiple calls, we can use the 
-      // RegisterN() method. This is especially useful for simultaneous method 
+      // RegisterN() method. This is especially useful for concurrent method 
       // calls.
       return reader.RegisterNRead(2, func(p []byte) (n int, err error) {
         return 0, io.EOF
