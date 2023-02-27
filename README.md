@@ -62,16 +62,15 @@ $ go generate
 ```
 
 Now you can see `Reader.gen.go` file in the `testdata/mock` folder, which is 
-simply uses `*amock_core.Mock` as a delegate.
-To see how this mock implementation works, let's test it. Create a `foo_test.go` 
-file:
+simply uses `*amock_core.Mock` as a delegate. To see how this mock 
+implementation works, let's test it. Create a `reader_mock_test.go` file:
 ```
 foo/
  |‒‒‒...
- |‒‒‒foo_test.go
+ |‒‒‒reader_mock_test.go
 ```
 
-__foo_test.go__
+__reader_mock_test.go__
 ```go
 package foo
 
@@ -190,13 +189,13 @@ func TestUnknownMethodCall(t *testing.T) {
 func TestUnregister(t *testing.T) {
   reader := mock.NewReader()
 
-  // Register two "Read" method calls.
+  // Register two Read() method calls.
   reader.RegisterNRead(2,
     func(p0 []uint8) (r0 int, r1 error) {
       return
     },
   )
-  // Unregister all "Read" method calls.
+  // Unregister all Read() method calls.
   reader.Unregister("Read")
 
   // Handle panic.
@@ -215,10 +214,18 @@ func TestUnregister(t *testing.T) {
   t.Error("no panic")
 }
 
-func TestCheckCallsFunction(t *testing.T) {
-  // With amock.CheckCalls() we can check if all registered method calls have 
-  // been called.	
+func TestCheckCalls(t *testing.T) {
+  // With the CheckCalls() method we can check if all the registered method 
+  // calls have been executed.
   var (
+    want = []amock_core.MethodCallsInfo{
+      {
+        MockName:      "Reader",
+        MethodName:    "Read",
+        ExpectedCalls: 1,
+        ActualCalls:   0,
+      },
+    }
     reader = func() mock.Reader {
       return mock.NewReader().RegisterRead(
         func(p []byte) (n int, err error) {
@@ -227,20 +234,85 @@ func TestCheckCallsFunction(t *testing.T) {
         })
     }()
   )
-  m := amock.CheckCalls([]*amock_core.Mock{reader.Mock})
-  if len(m) != 1 {
-    t.Fatal("unexpected CheckCalls result")
+  if callsInfo := reader.CheckCalls(); !reflect.DeepEqual(callsInfo, want) {
+    t.Errorf("unexpected callsInfo, want '%v' actual '%v'", want, callsInfo)
   }
-  arr, pst := m[0]
-  if !pst {
-    t.Error("no 0 key in CheckCalls result")
+  // There is also exists amock.CheckCalls([]*core.Mock) function, which you can
+  // use for many mocks.
+}
+```
+
+## In concurrent test.
+Let's see how we can use the Reader mock in concurrent test. Create a 
+`concurrent_test.go` file:
+```
+foo/
+ |‒‒‒...
+ |‒‒‒concurrent_test.go
+```
+
+__concurrent_test.go__
+```go
+package foo
+
+import (
+  "bytes"
+  "foo/testdata/mock"
+  "sync"
+  "testing"
+)
+
+func TestConcurrent(t *testing.T) {
+  // Here we want to read twice, concurrently.
+  var (
+    want = map[string]struct {
+      inB    []byte // Input param for Reader.Read().
+      outErr error  // Output param.
+      expB   []byte // Expected b value.
+    }{
+      string([]byte{1}):    {[]byte{1}, nil, []byte{10}},
+      string([]byte{2, 2}): {[]byte{2, 2}, nil, []byte{20, 20}},
+    }
+
+    // Register two calls to the Read() method for the Reader mock.
+    // We cannot predict the order of these calls, so we use the RegisterN()
+    // method instead of the two Register() methods.
+    reader = mock.NewReader().RegisterNRead(2,
+      func(b []byte) (n int, err error) {
+        if v, pst := want[string(b)]; pst {
+          copy(b, v.expB)
+          return len(v.expB), v.outErr
+        }
+        t.Errorf("unexpected input, b = '%v'", b)
+        return
+      },
+    )
+    // Create a WaitGroup to know when all the calls are done.
+    wg = func() *sync.WaitGroup {
+      wg := sync.WaitGroup{}
+      wg.Add(len(want))
+      return &wg
+    }()
+  )
+
+  // Each call to the Read() method we make in a separate gorountine.
+  for _, v := range want {
+    go func(b []byte, wantErr error, wantB []byte) {
+      n, err := reader.Read(b)
+      // Let's test the results.
+      if n != len(wantB) || err != wantErr || !bytes.Equal(b[:n], wantB) {
+        t.Errorf("unexpected result n = '%v' err = '%v' b = '%v'", n, err, b)
+      }
+      wg.Done()
+    }(v.inB, v.outErr, v.expB)
   }
-  if len(arr) != 1 {
-    t.Error("number of the MethodCallsInfo not equal to 1")
+
+  wg.Wait()
+
+  // And finally check the calls that have been made.
+  if callsInfo := reader.CheckCalls(); len(callsInfo) > 0 {
+    t.Error(callsInfo)
   }
-  info := arr[0]
-  // test info...
-  _ = info
 }
 ```
 
