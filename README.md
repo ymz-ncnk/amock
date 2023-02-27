@@ -242,7 +242,7 @@ func TestCheckCalls(t *testing.T) {
 }
 ```
 
-## In concurrent test.
+## In concurrent test
 Let's see how we can use the `Reader` mock in concurrent test. Create a 
 `concurrent_test.go` file:
 ```
