@@ -1,4 +1,7 @@
-# AMock
+# [Deprecated] AMock
+AMock is no longer supported, please consider using [mok](https://github.com/ymz-ncnk/mok) instead.
+AMock fails to generate code for generic data types.
+
 AMock is a simple thread-safe mocking library for Golang. It helps you generate 
 mock implementations of interfaces.
 
